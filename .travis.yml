@@ -1,0 +1,24 @@
+language: java
+jdk:
+- oraclejdk8
+sudo: false
+install:
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn package
+deploy:
+  edge: true
+  provider: cloudfoundry
+  api: https://api.run.pivotal.io
+  username: derya.duru@ordina.be
+  password:
+    secure: JRExYark2CWx61+fWwx2ll+nvhmInfbkyA6Pq74JHzVGQnwAFHLzjZmdNztsQfZW9soVR1cqo/UN5bAMc4acC3vaGAze/E8SDCNHy30Vu1TRMjo63qwvN339tpaHxXROe0iWp1riAgmvl814HsNBhcIZL50C5mISt+erPVRZGoVQNapTnRH17OddUhO4PletdYT/E0INmEfFqQhQv2NfVi2er+b0yvB+gmsEuZufzcPWE5pxe2lsN7g071foG49rsLwKDzUCUT29Fjru4IL2Y+YeI7F6lTcayRWwEAwsO2keqJcwFIr+FgXxWDuvmYmi8lvZgW921+8WJwbiixk/UuZYWs9TpUyhF0my3hMcm4OnYJC5fQuQ3ZJeekruLLm+XffJvBXIE09ha9WbITwejF2tfaDjG3Gu3qXz1gkKqL2vM27la3sn4afIuVIyXdTJ2Ccx4ph+FeubcqmOh214+zqAnurZlF9YFGeyJ/MAqoRD/T3BMHEge+mM+AAZ1/J+M5vN4W/W6pNbMhle2gtX+XQ3Io26C9pY9UiAWDkBG6rnuVuKR3VjSYub7tIExrbzi3BOrLJZBiKex1wNzO+vr3G7PQlHvICzfawtbAyZ35Wf430GVh2B2e1NAPXry/eQz066zuz4I0oLCVGgK+zmZK3g42eEIK26Y9v85By7GRY=
+  organization: OrdinaBelgiumNV
+  space: development
+  on:
+    repo: Ordineo/image-core-service
+    branch: master
+after_deploy:
+- mvn clean test jacoco:report coveralls:report
+notifications:
+  slack:
+    secure: MS4Jz+VXddOw5eBsrsi/YcYEuQXBSbREurqlr1fxYRB8HO5hBBF2qgbnZkb+NbtPQCzhJ/Jazh+bP4s9/6InncJHHyD8wbkgQgiLuHLZCBbbOiy0R5okc35RBaSG2RQUoHowYb4yjqLdTZLlLzyETdhsQIqSQhlBJo3PGk1Vcu4Vs6T/XqzN+lsefw0d0P3eelM8UjeI5QSvlKHUd6n0l9yGJ5KXlg2JQMojZZZmqURJMUCyk0lcW6MC+sLmeLTWCVz1BeZb0ZONKVIo4tRmQijR4XdycVno1Y8zI6P4ET6C81oeWPQLYJ4QSQAaYMHXW5SWSvxTo14lfueQXEDB8IRB15lxxkwClKcedBjEl6B3cKbUpHHYAbVaTJp+g8LE08hnkFhVB+O/M+ZycFocLcyd67R2lynaiv/NMPbsXEbfXPiYT+gAXfMIQfdoR/6AASic8YOQXLZHZSNpNbwtB2WNNuB3XTfOps7hnhcfKRtLqZ6bniAX45bCe9isZHFgMhLwPAFNt7kdqItsGH3r/1MM9ibEyJWpa0IFrS4SO1em1Znv8wuU1bHJgKW4pFIrr81S7fsX6Sa0ktDYuox49Q2pvejA2Es/tkLF8rB1TeHLNH6fvRCDSA3dNgzwex+lU+/6pBP81cargH0QaN1KASIAYIg/mjbK3a3dp7nDWOs=
