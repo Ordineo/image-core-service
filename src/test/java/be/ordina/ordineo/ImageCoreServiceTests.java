@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -18,7 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by DeDu on 17/03/2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes=ImageCoreApplication.class)
 public class ImageCoreServiceTests {
 
