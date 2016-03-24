@@ -45,9 +45,25 @@ public class ImageCoreServiceIntegrationTests {
     }
 
     @Test
-    public void getImageFail() throws Exception {
+    public void getPngImage() throws Exception {
+        mockMvc.perform(
+                get("/api/images/Nivek").accept(MediaType.IMAGE_PNG))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void getUserFail() throws Exception {
         mockMvc.perform(
                 get("/api/images/Derya"))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+    }
+
+    @Test
+    public void getImageFail() throws Exception {
+        mockMvc.perform(
+                get("/api/images/Gina"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }
