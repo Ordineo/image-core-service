@@ -1,19 +1,18 @@
 package be.ordina.ordineo.controller;
 
+import be.ordina.ordineo.config.AWSClient;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
+import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by DeDu on 17/03/2016.
@@ -22,38 +21,65 @@ import java.io.InputStream;
 @RequestMapping(value = "/api/images")
 public class ImageController {
 
+    public static final String BUCKET = "ordineo";
+
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private AWSClient awsClient;
 
-//    @RequestMapping(method = RequestMethod.POST, value = "/upload")
-//    public void uploadImage(@RequestParam("file") MultipartFile image) {
-//        try {
-//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("image-core-service/src/main/resources/images/" + image.getOriginalFilename())));
-//            FileCopyUtils.copy(image.getInputStream(), stream);
-//            stream.close();
-//        }
-//        catch (Exception e) {
-//            System.out.println("Error: " + e.getMessage());
-//        }
-//    }
+    @RequestMapping(method = RequestMethod.POST, value = "/{username}")
+    public void uploadImageByUrl(@PathVariable String username, @RequestHeader("url") String url) {
 
-    @RequestMapping(method = RequestMethod.GET, value = ("/{username}"), produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    public byte[] getImage(@PathVariable String username) throws IllegalArgumentException, NullPointerException, IOException{
+        url = url.replace("https:", "http:");
+
+        try {
+            URL imageUrl = new URL(url);
+            URLConnection connection = imageUrl.openConnection();
+            InputStream inputStream = connection.getInputStream();
+
+            String image = "ProfilePictures/" + username + ".jpg";
+
+            awsClient.putObject(new PutObjectRequest(BUCKET, image, inputStream, new ObjectMetadata())
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            Image newImage = new Image();
+            newImage.setImage(image);
+            newImage.setUsername(username);
+
+            imageRepository.save(newImage);
+
+        }
+        catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = ("/{username}"), produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getImage(@PathVariable String username) throws AmazonS3Exception, NullPointerException, IOException{
         Image image = imageRepository.findByUsernameIgnoreCase(username);
+
+        S3Object object = awsClient.getObject(BUCKET, image.getImage());
+        InputStream is = new BufferedInputStream(object.getObjectContent());
+
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
 
-        InputStream is = this.getClass().getResourceAsStream(image.getImage());
         BufferedImage img = ImageIO.read(is);
-
-        if(image.getImage().contains(".jpg")) {
-            ImageIO.write(img, "jpg", bao);
-        }
-        else {
-            ImageIO.write(img, "png", bao);
-        }
+        ImageIO.write(img, "jpg", bao);
 
         return bao.toByteArray();
+
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = ("/{username}"))
+    public void deleteImage(@PathVariable String username) {
+        Image image = imageRepository.findByUsernameIgnoreCase(username);
+
+        awsClient.deleteObject(BUCKET, image.getImage());
+
+        imageRepository.delete(image);
 
     }
 

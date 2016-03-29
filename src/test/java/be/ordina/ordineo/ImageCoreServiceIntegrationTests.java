@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -38,24 +40,27 @@ public class ImageCoreServiceIntegrationTests {
 
     @Test
     public void getImage() throws Exception {
+        // Create
         mockMvc.perform(
-                get("/api/images/Turbots").accept(MediaType.IMAGE_JPEG))
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+                post("/api/images/a")
+                        .header("url", "https://media.licdn.com/mpr/mprx/0_PhhQv7mNs0uKASzlbdjhkYacsOhpkDnBTAp8XAf-Z0Dyz3zZlEjhkL7tIxTrA7zjcCj8FHat4s8yQpLq6wldCNmN7s8pQpXU-wlkc7tqV8AzQwv--fT5lSF82L"));
 
-    @Test
-    public void getPngImage() throws Exception {
+        // Get
         mockMvc.perform(
-                get("/api/images/Nivek").accept(MediaType.IMAGE_PNG))
+                get("/api/images/a").accept(MediaType.IMAGE_JPEG))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        // Delete
+        mockMvc.perform(
+                delete("/api/images/a")
+        );
     }
 
     @Test
     public void getUserFail() throws Exception {
         mockMvc.perform(
-                get("/api/images/Derya"))
+                get("/api/images/dfetrygvngvfhtyupqaz"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }
@@ -63,7 +68,7 @@ public class ImageCoreServiceIntegrationTests {
     @Test
     public void getImageFail() throws Exception {
         mockMvc.perform(
-                get("/api/images/Gina"))
+                get("/api/images/Nivek"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }
