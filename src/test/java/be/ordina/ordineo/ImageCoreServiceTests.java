@@ -1,5 +1,6 @@
 package be.ordina.ordineo;
 
+import be.ordina.ordineo.config.AWSClient;
 import be.ordina.ordineo.controller.ImageController;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
@@ -11,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -22,8 +23,13 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @ContextConfiguration(classes=ImageCoreApplication.class)
 public class ImageCoreServiceTests {
 
+    public static final String BUCKET = "ordineo";
+
     @Mock
     private ImageRepository repositoryMock;
+
+    @Mock
+    private AWSClient awsClientMock;
 
     @InjectMocks
     private ImageController controller;
@@ -37,24 +43,12 @@ public class ImageCoreServiceTests {
     public void findByUsername() throws Exception {
 
         Image image = new Image();
-        image.setImage("/images/Turbots.jpg");
+        image.setImage("ProfilePictures/Turbots.jpg");
         image.setUsername("Turbots");
 
         when(repositoryMock.findByUsernameIgnoreCase("Turbots")).thenReturn(image);
 
         assertEquals(repositoryMock.findByUsernameIgnoreCase("Turbots"), image);
-
-    }
-
-    @Test
-     public void getImage() throws Exception {
-
-        Image image = new Image(1L, "Nivek", "/images/Nivek.png");
-
-        when(repositoryMock.findByUsernameIgnoreCase("Nivek")).thenReturn(image);
-
-        assertNotNull(controller.getImage("Nivek"));
-        assertTrue(controller.getImage("Nivek").length > 1);
 
     }
 

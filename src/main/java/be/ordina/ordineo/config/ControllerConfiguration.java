@@ -1,5 +1,6 @@
 package be.ordina.ordineo.config;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +18,8 @@ public class ControllerConfiguration {
     @ResponseStatus(value= HttpStatus.NOT_FOUND,reason = "User not found")
     public void userNotFound(){}
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(value=HttpStatus.NOT_FOUND, reason = "Image not found")
+    @ExceptionHandler(AmazonS3Exception.class)
+    @ResponseStatus(value=HttpStatus.NOT_FOUND, reason = "Image (Amazon S3 key) not found")
     public void imageNotFound(){}
 
     @ExceptionHandler(IOException.class)
