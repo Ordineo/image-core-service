@@ -11,9 +11,6 @@ import org.springframework.stereotype.Component;
 public class AWSClient extends AmazonS3Client {
 
     public AWSClient() {
-        super(new BasicAWSCredentials(
-                "AKIAIQYXG7RGROCRCKGQ",
-                "FtJvow1fqfovSTLl80dAQ9mTxqF3dLyhTDX8CWg9"));
         setEndpoint("s3.eu-central-1.amazonaws.com");
     }
 

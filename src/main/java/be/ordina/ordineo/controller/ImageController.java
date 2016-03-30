@@ -30,16 +30,18 @@ public class ImageController {
     private AWSClient awsClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/{username}")
-    public void uploadImageByUrl(@PathVariable String username, @RequestHeader("url") String url) {
+    public void uploadImageByUrl(@PathVariable String username, @RequestBody String url) {
+
 
         url = url.replace("https:", "http:");
+
 
         try {
             URL imageUrl = new URL(url);
             URLConnection connection = imageUrl.openConnection();
             InputStream inputStream = connection.getInputStream();
 
-            String image = "ProfilePictures/" + username + ".jpg";
+            String image = "ProfilePictures/" + username.toLowerCase() + ".jpg";
 
             awsClient.putObject(new PutObjectRequest(BUCKET, image, inputStream, new ObjectMetadata())
                     .withCannedAcl(CannedAccessControlList.PublicRead));

@@ -63,6 +63,16 @@
             <version>1.0.6.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-aws-autoconfigure</artifactId>
+            <version>1.0.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-aws-context</artifactId>
+            <version>1.0.3.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
@@ -125,6 +135,11 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.17</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -206,6 +221,16 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>io.spring.repo.maven.release</id>
+            <url>http://repo.spring.io/release/</url>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>io.spring.repo.maven.milestone</id>
+            <url>http://repo.spring.io/milestone/</url>
+            <snapshots><enabled>false</enabled></snapshots>
         </repository>
     </repositories>
 

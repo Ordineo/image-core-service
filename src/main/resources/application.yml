@@ -10,11 +10,21 @@ spring:
     rest:
       basePath: /api
       defaultMediaType: application/json
-logging:
+  logging:
   level:
     be.ordina: 'DEBUG'
     #org.hibernate: 'ERROR'
 ---
+cloud:
+  aws:
+    region:
+      auto: true
+      static: eu-west-1
+    credentials:
+      accessKey: 'AKIAIQYXG7RGROCRCKGQ'
+      secretKey: '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'
+      instanceProfile: true
+
 eureka:
   client:
     serviceUrl:
