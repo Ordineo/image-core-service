@@ -3,6 +3,7 @@ package be.ordina.ordineo.controller;
 import be.ordina.ordineo.config.AWSClient;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
+import be.ordina.ordineo.service.ImageService;
 import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,65 +25,21 @@ public class ImageController {
     public static final String BUCKET = "ordineo";
 
     @Autowired
-    private ImageRepository imageRepository;
-
-    @Autowired
-    private AWSClient awsClient;
+    ImageService service;
 
     @RequestMapping(method = RequestMethod.POST, value = "/{username}")
-    public void uploadImageByUrl(@PathVariable String username, @RequestBody String url) {
-
-
-        url = url.replace("https:", "http:");
-
-
-        try {
-            URL imageUrl = new URL(url);
-            URLConnection connection = imageUrl.openConnection();
-            InputStream inputStream = connection.getInputStream();
-
-            String image = "ProfilePictures/" + username.toLowerCase() + ".jpg";
-
-            awsClient.putObject(new PutObjectRequest(BUCKET, image, inputStream, new ObjectMetadata())
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
-
-            Image newImage = new Image();
-            newImage.setImage(image);
-            newImage.setUsername(username);
-
-            imageRepository.save(newImage);
-
-        }
-        catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
+    public void uploadImageByUrl(@PathVariable String username, @RequestBody String url) throws IOException,NullPointerException {
+        service.uploadToAWS(username.toLowerCase(),url);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = ("/{username}"), produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getImage(@PathVariable String username) throws AmazonS3Exception, NullPointerException, IOException{
-        Image image = imageRepository.findByUsernameIgnoreCase(username);
-
-        S3Object object = awsClient.getObject(BUCKET, image.getImage());
-        InputStream is = new BufferedInputStream(object.getObjectContent());
-
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-
-        BufferedImage img = ImageIO.read(is);
-        ImageIO.write(img, "jpg", bao);
-
-        return bao.toByteArray();
-
+    public byte[] getImage(@PathVariable String username) throws AmazonS3Exception, IOException,NullPointerException{
+       return service.getImage(username);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = ("/{username}"))
     public void deleteImage(@PathVariable String username) {
-        Image image = imageRepository.findByUsernameIgnoreCase(username);
-
-        awsClient.deleteObject(BUCKET, image.getImage());
-
-        imageRepository.delete(image);
-
+        service.deleteImage(username);
     }
 
 }
