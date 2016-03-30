@@ -43,7 +43,7 @@ public class ImageCoreServiceIntegrationTests {
         // Create
         mockMvc.perform(
                 post("/api/images/a")
-                        .header("url", "https://media.licdn.com/mpr/mprx/0_PhhQv7mNs0uKASzlbdjhkYacsOhpkDnBTAp8XAf-Z0Dyz3zZlEjhkL7tIxTrA7zjcCj8FHat4s8yQpLq6wldCNmN7s8pQpXU-wlkc7tqV8AzQwv--fT5lSF82L"));
+                        .content("https://media.licdn.com/mpr/mprx/0_PhhQv7mNs0uKASzlbdjhkYacsOhpkDnBTAp8XAf-Z0Dyz3zZlEjhkL7tIxTrA7zjcCj8FHat4s8yQpLq6wldCNmN7s8pQpXU-wlkc7tqV8AzQwv--fT5lSF82L"));
 
         // Get
         mockMvc.perform(
@@ -68,7 +68,7 @@ public class ImageCoreServiceIntegrationTests {
     @Test
     public void getImageFail() throws Exception {
         mockMvc.perform(
-                get("/api/images/Nivek"))
+                get("/api/images/Unknown"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }

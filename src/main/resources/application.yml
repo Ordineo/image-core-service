@@ -21,8 +21,8 @@ cloud:
       auto: true
       static: eu-west-1
     credentials:
-      accessKey: 'AKIAIQYXG7RGROCRCKGQ'
-      secretKey: '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'
+      accessKeyId: 'AKIAIQYXG7RGROCRCKGQ'
+      secretAccessKey: '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'
       instanceProfile: true
 
 eureka:
