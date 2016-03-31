@@ -1,1 +1,1 @@
-insert into image(username,image) VALUES ('Nivek','ProfilePictures/nivek.jpeg');
+insert into image(username,image) VALUES ('Nivek','ProfilePictures/nivek.jpg');
