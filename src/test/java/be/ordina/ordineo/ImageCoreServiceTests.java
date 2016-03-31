@@ -1,9 +1,10 @@
 package be.ordina.ordineo;
 
-import be.ordina.ordineo.config.AWSClient;
+import be.ordina.ordineo.config.AWSClientConfiguration;
 import be.ordina.ordineo.controller.ImageController;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
+import com.amazonaws.services.s3.AmazonS3Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ public class ImageCoreServiceTests {
     private ImageRepository repositoryMock;
 
     @Mock
-    private AWSClient awsClientMock;
+    private AmazonS3Client awsClientMock;
 
     @InjectMocks
     private ImageController controller;
@@ -41,13 +42,10 @@ public class ImageCoreServiceTests {
 
     @Test
     public void findByUsername() throws Exception {
-
         Image image = new Image();
         image.setImage("ProfilePictures/Turbots.jpg");
         image.setUsername("Turbots");
-
         when(repositoryMock.findByUsernameIgnoreCase("Turbots")).thenReturn(image);
-
         assertEquals(repositoryMock.findByUsernameIgnoreCase("Turbots"), image);
 
     }

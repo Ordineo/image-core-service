@@ -2,15 +2,9 @@ package be.ordina.ordineo.config;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
+import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
-/**
- * Created by DeDu on 23/03/2016.
- */
 @ControllerAdvice
 public class ControllerConfiguration {
 

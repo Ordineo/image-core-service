@@ -1,16 +1,11 @@
 package be.ordina.ordineo;
 
-import com.amazonaws.services.ec2.AmazonEC2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.retry.annotation.EnableRetry;
 
-/**
- * Created by DeDu on 17/03/2016.
- */
 @SpringBootApplication
 @EnableFeignClients
 @EnableEurekaClient
