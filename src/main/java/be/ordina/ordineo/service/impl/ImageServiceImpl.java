@@ -4,6 +4,7 @@ import be.ordina.ordineo.config.AWSClient;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
 import be.ordina.ordineo.service.ImageService;
+import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -26,11 +27,18 @@ public class ImageServiceImpl implements ImageService {
 
     public static final String BUCKET = "ordineo";
 
+
+
+
     @Autowired
     ImageRepository imageRepository;
 
     @Autowired
     AWSClient awsClient;
+
+
+
+
 
     @Override
     public void uploadToAWS(String username,String url) throws IOException {
