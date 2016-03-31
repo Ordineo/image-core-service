@@ -4,6 +4,7 @@ import be.ordina.ordineo.config.AWSClient;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;
 import be.ordina.ordineo.service.ImageService;
+import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ public class ImageController {
 
     @Autowired
     ImageService service;
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/{username}")
     public void uploadImageByUrl(@PathVariable String username, @RequestBody String url) throws IOException,NullPointerException {
