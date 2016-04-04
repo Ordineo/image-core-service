@@ -5,13 +5,11 @@ import be.ordina.ordineo.repository.ImageRepository;
 import be.ordina.ordineo.service.ImageService;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -29,7 +27,7 @@ public class ImageServiceImpl implements ImageService {
     public static final String BUCKET = "ordineo";
 
     @Override
-    public void uploadToAWS(String username,String url) throws IOException {
+    public void uploadToAWS(String username, String url) throws IOException {
         url = url.replace("https:", "http:");
         String image = "ProfilePictures/" + username + ".jpg";
         try {
@@ -56,15 +54,13 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public byte[] getImage(String username) throws IOException {
-        InputStream is = new BufferedInputStream(getAWSImage(username).getObjectContent());
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        S3Object awsImage = getAWSImage(username);
         try {
-            BufferedImage img = ImageIO.read(is);
-            ImageIO.write(img, "jpg", bao);
-        } catch (IOException e) {
+            InputStream is = new BufferedInputStream(awsImage.getObjectContent());
+            return IOUtils.toByteArray(is);
+        } catch (Exception e) {
             throw new IOException(e);
         }
-        return bao.toByteArray();
     }
 
     protected S3Object getAWSImage(String username) throws AmazonS3Exception{
