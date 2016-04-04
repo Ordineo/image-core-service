@@ -1,6 +1,5 @@
 package be.ordina.ordineo;
 
-import be.ordina.ordineo.config.AWSClientConfiguration;
 import be.ordina.ordineo.controller.ImageController;
 import be.ordina.ordineo.model.Image;
 import be.ordina.ordineo.repository.ImageRepository;

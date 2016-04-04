@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -37,14 +40,13 @@ public class ImageServiceImpl implements ImageService {
                     .withCannedAcl(CannedAccessControlList.PublicRead));
             saveImage(username,image);
         } catch (Exception e) {
-            throw new IOException();
+            throw new IOException(e);
         }
     }
 
-    @Override
-    public void saveImage(String username, String image) {
+    protected void saveImage(String username, String image) {
         Image newImage = imageRepository.findByUsernameIgnoreCase(username);
-        if(newImage==null) {
+        if (newImage==null) {
             newImage = new Image();
             newImage.setUsername(username);
         }
@@ -59,18 +61,17 @@ public class ImageServiceImpl implements ImageService {
         try {
             BufferedImage img = ImageIO.read(is);
             ImageIO.write(img, "jpg", bao);
-        }catch (IOException e){
-            throw new IOException();
+        } catch (IOException e) {
+            throw new IOException(e);
         }
         return bao.toByteArray();
     }
 
-    @Override
-    public S3Object getAWSImage(String username) throws AmazonS3Exception{
+    protected S3Object getAWSImage(String username) throws AmazonS3Exception{
         Image image = imageRepository.findByUsernameIgnoreCase(username);
-        if (image !=null){
+        if (image !=null) {
             return amazonS3Client.getObject(BUCKET, image.getImage());
-        }else{
+        } else {
             throw new NullPointerException();
         }
     }
@@ -81,4 +82,5 @@ public class ImageServiceImpl implements ImageService {
         amazonS3Client.deleteObject(BUCKET, image.getImage());
         imageRepository.delete(image);
     }
+
 }
