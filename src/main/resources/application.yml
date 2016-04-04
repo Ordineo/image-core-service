@@ -23,6 +23,8 @@ cloud:
       accessKey: 'AKIAIQYXG7RGROCRCKGQ'
       secretKey: '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'
       instanceProfile: true
+    s3:
+      endpoint: s3.eu-central-1.amazonaws.com
 
 eureka:
   client:
