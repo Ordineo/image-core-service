@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -42,7 +43,7 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    public void uploadToAWSAndSave() throws IOException {
+    public void uploadToAWSUrl() throws IOException {
         String url = "https://test.com";
 
         imageService.uploadToAWS(username, url);
@@ -55,12 +56,38 @@ public class ImageServiceImplTest {
     }
 
     @Test(expected = IOException.class)
-    public void uploadToAWSFail() throws IOException {
+    public void uploadToAWSUrlFail() throws IOException {
         String url = "https://test.com";
 
         when( amazonS3Client.putObject( any(PutObjectRequest.class)) ).thenThrow( Exception.class );
 
         imageService.uploadToAWS(username, url);
+
+        verify( amazonS3Client ).putObject(any(PutObjectRequest.class));
+        verifyNoMoreInteractions( amazonS3Client );
+        verifyNoMoreInteractions( imageRepository );
+    }
+
+    @Test
+    public void uploadToAWSInputStream() throws Exception {
+        InputStream inputStream = mock(InputStream.class);
+
+        imageService.uploadToAWS(username, inputStream);
+
+        verify( amazonS3Client ).putObject( any(PutObjectRequest.class) );
+        verify( imageRepository ).findByUsernameIgnoreCase(username);
+        verify( imageRepository ).save( any(Image.class) );
+        verifyNoMoreInteractions( amazonS3Client );
+        verifyNoMoreInteractions( imageRepository );
+    }
+
+    @Test(expected = IOException.class)
+    public void uploadToAWSInputStreamFail() throws IOException {
+        InputStream inputStream = mock(InputStream.class);
+
+        when( amazonS3Client.putObject( any(PutObjectRequest.class)) ).thenThrow( Exception.class );
+
+        imageService.uploadToAWS(username, inputStream);
 
         verify( amazonS3Client ).putObject(any(PutObjectRequest.class));
         verifyNoMoreInteractions( amazonS3Client );
@@ -137,4 +164,5 @@ public class ImageServiceImplTest {
         verifyNoMoreInteractions( amazonS3Client );
         verifyNoMoreInteractions( imageRepository );
     }
+
 }
