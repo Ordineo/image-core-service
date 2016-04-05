@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ControllerConfiguration {
 
     @ExceptionHandler(NullPointerException.class)
-    @ResponseStatus(value= HttpStatus.NOT_FOUND,reason = "User not found")
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "User not found")
     public void userNotFound(){}
 
     @ExceptionHandler(AmazonS3Exception.class)
