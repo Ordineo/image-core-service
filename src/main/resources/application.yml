@@ -1,8 +1,6 @@
 spring:
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create
   jackson:
     serialization:
       WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS: false
@@ -26,11 +24,11 @@ cloud:
       secretKey: 'FtJvow1fqfovSTLl80dAQ9mTxqF3dLyhTDX8CWg9'
       instanceProfile: true
     rds:
-      social:
-        dbInstanceIdentifier: social
-        databaseName: social
+      image:
+        dbInstanceIdentifier: image
+        databaseName: image
         username: admin
-        password: social-admin
+        password: image-admin
 ---
 eureka:
   client:
@@ -41,6 +39,9 @@ ribbon:
 ---
 spring:
   profiles: test
+  jpa:
+    hibernate:
+      ddl-auto: create
   datasource:
     schema: classpath:/schema.sql
     driverClassName: org.hsqldb.jdbc.JDBCDriver
