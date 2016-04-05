@@ -22,7 +22,7 @@ public class ImageController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{username}")
-    public void uploadImage(@PathVariable String username, @RequestParam("file") MultipartFile file) throws IOException {
+    public void uploadImage(@PathVariable String username, @RequestParam("profilePicture") MultipartFile file) throws IOException {
         service.uploadToAWS(username.toLowerCase(), file.getInputStream());
     }
 
