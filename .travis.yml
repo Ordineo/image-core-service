@@ -6,7 +6,7 @@ install:
   -
 script:
   - mvn test
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn install -Pcloud -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 deploy:
   edge: true
   provider: cloudfoundry
