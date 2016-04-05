@@ -10,7 +10,9 @@ spring:
     rest:
       basePath: /api
       defaultMediaType: application/json
-  logging:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+logging:
   level:
     be.ordina: 'DEBUG'
     #org.hibernate: 'ERROR'
@@ -18,20 +20,30 @@ spring:
 cloud:
   aws:
     region:
-      static: eu-west-1
+      static: us-east-1
     credentials:
       accessKey: 'AKIAIQYXG7RGROCRCKGQ'
       secretKey: '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'
       instanceProfile: true
-    s3:
-      endpoint: s3.eu-central-1.amazonaws.com
-
+    rds:
+      social:
+        dbInstanceIdentifier: social
+        databaseName: social
+        username: admin
+        password: social-admin
+---
 eureka:
   client:
     serviceUrl:
       defaultZone: https://eureka-ordineo.cfapps.io/eureka/ #http://localhost:8761/eureka/ #
 ribbon:
   IsSecure: true
+---
+spring:
+  profiles: test
+  datasource:
+    schema: classpath:/schema.sql
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
 ---
 spring:
   profiles: cloud
