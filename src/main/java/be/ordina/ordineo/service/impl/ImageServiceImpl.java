@@ -24,7 +24,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     AmazonS3Client amazonS3Client;
 
-    public static final String BUCKET = "ordineo";
+    public static final String BUCKET = "360tool";
 
     public void uploadToAWS(String username, String url) throws IOException {
         try {
