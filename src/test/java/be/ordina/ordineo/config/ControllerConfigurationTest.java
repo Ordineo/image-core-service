@@ -1,7 +1,7 @@
 package be.ordina.ordineo.config;
 
 import be.ordina.ordineo.ImageCoreApplication;
-import be.ordina.ordineo.mock.BeanMockImageService;
+import be.ordina.ordineo.mock.ImageServiceBeanMockConfiguration;
 import be.ordina.ordineo.service.ImageService;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.junit.Before;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Created by gide on 05/04/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {ImageCoreApplication.class, BeanMockImageService.class})
+@SpringApplicationConfiguration(classes = {ImageCoreApplication.class, ImageServiceBeanMockConfiguration.class})
 @WebAppConfiguration
 public class ControllerConfigurationTest {
 

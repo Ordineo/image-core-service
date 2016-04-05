@@ -1,6 +1,5 @@
 package be.ordina.ordineo.mock;
 
-import be.ordina.ordineo.BeanMock;
 import be.ordina.ordineo.service.ImageService;
 import be.ordina.ordineo.service.impl.ImageServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,7 @@ import static org.mockito.Mockito.mock;
  */
 @Configuration
 @BeanMock
-public class BeanMockImageService {
+public class ImageServiceBeanMockConfiguration {
 
     @Bean
     @Primary

@@ -1,5 +1,6 @@
 package be.ordina.ordineo;
 
+import be.ordina.ordineo.mock.BeanMock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
