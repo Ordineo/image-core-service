@@ -26,20 +26,31 @@ public class ImageServiceImpl implements ImageService {
 
     public static final String BUCKET = "ordineo";
 
-    @Override
     public void uploadToAWS(String username, String url) throws IOException {
-        url = url.replace("https:", "http:");
-        String image = "ProfilePictures/" + username + ".jpg";
         try {
+            url = url.replace("https:", "http:");
             URL imageUrl = new URL(url);
             URLConnection connection = imageUrl.openConnection();
             InputStream inputStream = connection.getInputStream();
-            amazonS3Client.putObject(new PutObjectRequest(BUCKET, image, inputStream, new ObjectMetadata())
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
-            saveImage(username,image);
+            uploadToAWSAndSave(username, inputStream);
         } catch (Exception e) {
             throw new IOException(e);
         }
+    }
+
+    public void uploadToAWS(String username, InputStream inputStream) throws IOException {
+        try {
+            uploadToAWSAndSave(username, inputStream);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+    }
+
+    private void uploadToAWSAndSave(String username, InputStream inputStream) {
+        String image = "ProfilePictures/" + username + ".jpg";
+        amazonS3Client.putObject(new PutObjectRequest(BUCKET, image, inputStream, new ObjectMetadata())
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        saveImage(username,image);
     }
 
     protected void saveImage(String username, String image) {
@@ -63,7 +74,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    protected S3Object getAWSImage(String username) throws AmazonS3Exception{
+    protected S3Object getAWSImage(String username) throws AmazonS3Exception {
         Image image = imageRepository.findByUsernameIgnoreCase(username);
         if (image !=null) {
             return amazonS3Client.getObject(BUCKET, image.getImage());

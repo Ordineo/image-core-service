@@ -27,19 +27,17 @@ public class ImageCoreServiceIntegrationTests {
     @Autowired
     private WebApplicationContext wac;
 
-
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .build();
-
     }
 
     @Test
     public void saveGetAndDeleteImage() throws Exception {
         // Create
         mockMvc.perform(
-                post("/api/images/a")
+                post("/api/images/url/a")
                         .content("https://media.licdn.com/mpr/mprx/0_PhhQv7mNs0uKASzlbdjhkYacsOhpkDnBTAp8XAf-Z0Dyz3zZlEjhkL7tIxTrA7zjcCj8FHat4s8yQpLq6wldCNmN7s8pQpXU-wlkc7tqV8AzQwv--fT5lSF82L"))
                 .andExpect(status().isOk());
 
