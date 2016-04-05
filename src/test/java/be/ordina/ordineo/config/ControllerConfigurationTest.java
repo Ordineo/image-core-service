@@ -1,17 +1,14 @@
 package be.ordina.ordineo.config;
 
 import be.ordina.ordineo.ImageCoreApplication;
+import be.ordina.ordineo.mock.BeanMockImageService;
 import be.ordina.ordineo.service.ImageService;
-import be.ordina.ordineo.service.impl.ImageServiceImpl;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,18 +26,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Created by gide on 05/04/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {ImageCoreApplication.class})
+@SpringApplicationConfiguration(classes = {ImageCoreApplication.class, BeanMockImageService.class})
 @WebAppConfiguration
 public class ControllerConfigurationTest {
-
-    @Configuration
-    static class Config {
-        @Bean
-        @Primary
-        public ImageService imageServiceMock() {
-            return mock(ImageServiceImpl.class);
-        }
-    }
 
     @Autowired
     WebApplicationContext wac;
