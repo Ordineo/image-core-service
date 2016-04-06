@@ -201,21 +201,7 @@
 
     <profiles>
         <profile>
-            <id>local</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-aws-jdbc</artifactId>
-                    <version>1.0.3.RELEASE</version>
-                </dependency>
-                <dependency>
-                    <groupId>mysql</groupId>
-                    <artifactId>mysql-connector-java</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>cloud</id>
+            <id>aws-rds</id>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.cloud</groupId>
