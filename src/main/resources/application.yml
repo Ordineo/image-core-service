@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: @activeSpringProfile@
   jpa:
     show-sql: true
   jackson:
@@ -8,13 +10,11 @@ spring:
     rest:
       basePath: /api
       defaultMediaType: application/json
-  datasource:
-    driverClassName: com.mysql.jdbc.Driver
 logging:
   level:
     be.ordina: 'DEBUG'
     #org.hibernate: 'ERROR'
----
+
 cloud:
   aws:
     region:
@@ -23,12 +23,6 @@ cloud:
       accessKey: 'AKIAIQYXG7RGROCRCKGQ'
       secretKey: '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'
       instanceProfile: true
-    rds:
-      image:
-        dbInstanceIdentifier: image
-        databaseName: image
-        username: admin
-        password: image-admin
 ---
 eureka:
   client:
@@ -38,13 +32,26 @@ ribbon:
   IsSecure: true
 ---
 spring:
-  profiles: test
+  profiles: hsql
   jpa:
     hibernate:
       ddl-auto: create
   datasource:
-    schema: classpath:/schema.sql
+    data: classpath:/import-hsql.sql
     driverClassName: org.hsqldb.jdbc.JDBCDriver
+---
+spring:
+  profiles: aws-rds
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+cloud:
+  aws:
+    rds:
+      image:
+        dbInstanceIdentifier: image
+        databaseName: image
+        username: admin
+        password: image-admin
 ---
 spring:
   profiles: cloud
