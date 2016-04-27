@@ -39,8 +39,6 @@ spring:
   datasource:
     data: classpath:/import-hsql.sql
     driverClassName: org.hsqldb.jdbc.JDBCDriver
-    testOnBorrow: true
-    validationQuery: SELECT 1
 ---
 spring:
   profiles: aws-rds
