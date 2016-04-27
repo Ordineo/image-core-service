@@ -36,9 +36,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-  datasource:
-    data: classpath:/import-hsql.sql
-    driverClassName: org.hsqldb.jdbc.JDBCDriver
+#  datasource:
+#    data: classpath:/import-hsql.sql
+#    driverClassName: org.hsqldb.jdbc.JDBCDriver
 ---
 spring:
   profiles: aws-rds
