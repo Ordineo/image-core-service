@@ -36,11 +36,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-  datasource:
-    data: classpath:/import-hsql.sql
-    driverClassName: org.hsqldb.jdbc.JDBCDriver
-    testOnBorrow: true
-    validationQuery: SELECT 1
+#  datasource:
+#    data: classpath:/import-hsql.sql
+#    driverClassName: org.hsqldb.jdbc.JDBCDriver
 ---
 spring:
   profiles: aws-rds
