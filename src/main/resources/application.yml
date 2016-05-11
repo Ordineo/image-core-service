@@ -50,7 +50,7 @@ cloud:
       image:
         dbInstanceIdentifier: image
         databaseName: image
-        username: DieterHubau
+        username: image
         password: image-admin
 ---
 spring:
