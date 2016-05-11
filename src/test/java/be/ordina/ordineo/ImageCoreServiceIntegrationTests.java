@@ -46,14 +46,14 @@ public class ImageCoreServiceIntegrationTests {
         Image image = new Image();
 
         image.setUsername("a");
-        image.setImage("https://www.google.be/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwipgJy6k9LMAhVLkiwKHU2tDK8QjRwIBw&url=http%3A%2F%2Fwww.bbc.com%2Fnews%2Ftechnology-34119243&psig=AFQjCNEPecvWNADYM-K0GjU_xqzh1DfDWQ&ust=1463060559396580");
+        image.setImage("ProfilePictures/nivek.jpg");
 
         imageRepository.save(image);
     }
 
     @Test
     public void saveGetAndDeleteImage() throws Exception {
-        String url = "https://www.google.be/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwipgJy6k9LMAhVLkiwKHU2tDK8QjRwIBw&url=http%3A%2F%2Fwww.bbc.com%2Fnews%2Ftechnology-34119243&psig=AFQjCNEPecvWNADYM-K0GjU_xqzh1DfDWQ&ust=1463060559396580";
+        String url = "ProfilePictures/nivek.jpg";
         // Create
         mockMvc.perform(
                 post("/api/images/url/a")
