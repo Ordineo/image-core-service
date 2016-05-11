@@ -24,7 +24,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     AmazonS3Client amazonS3Client;
 
-    public static final String BUCKET = "360tool";
+    public static final String BUCKET = "jworks360tool";
 
     public void uploadToAWS(String username, String url) throws IOException {
         try {
@@ -76,6 +76,7 @@ public class ImageServiceImpl implements ImageService {
 
     protected S3Object getAWSImage(String username) throws AmazonS3Exception {
         Image image = imageRepository.findByUsernameIgnoreCase(username);
+        System.out.println(image);
         if (image !=null) {
             return amazonS3Client.getObject(BUCKET, image.getImage());
         } else {
