@@ -15,14 +15,6 @@ logging:
     be.ordina: 'DEBUG'
     #org.hibernate: 'ERROR'
 
-cloud:
-  aws:
-    region:
-      static: us-east-1
-    credentials:
-      accessKey: ${AWS_ACCESSKEY}
-      secretKey: ${AWS_SECRETKEY}
-      instanceProfile: true
 ---
 eureka:
   client:
@@ -44,14 +36,7 @@ spring:
   profiles: aws-rds
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-cloud:
-  aws:
-    rds:
-      image:
-        dbInstanceIdentifier: image
-        databaseName: image
-        username: ${AWS_DB_USERNAME}
-        password: ${AWS_DB_PASSWORD}
+
 ---
 spring:
   profiles: cloud

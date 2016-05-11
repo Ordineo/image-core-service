@@ -1,8 +1,11 @@
 package be.ordina.ordineo;
 
+import be.ordina.ordineo.mock.ImageServiceBeanMockConfiguration;
+import be.ordina.ordineo.service.ImageService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
@@ -12,11 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ImageCoreApplication.class)
+@SpringApplicationConfiguration(classes = {ImageCoreApplication.class, ImageServiceBeanMockConfiguration.class})
 @WebAppConfiguration
 public class ImageCoreServiceIntegrationTests {
 
@@ -24,6 +30,9 @@ public class ImageCoreServiceIntegrationTests {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private ImageService imageService;
 
     @Before
     public void setup() {
@@ -33,10 +42,11 @@ public class ImageCoreServiceIntegrationTests {
 
     @Test
     public void saveGetAndDeleteImage() throws Exception {
+        String url = "https://google.com/image/gif";
         // Create
         mockMvc.perform(
                 post("/api/images/url/a")
-                        .content("https://media.licdn.com/mpr/mprx/0_PhhQv7mNs0uKASzlbdjhkYacsOhpkDnBTAp8XAf-Z0Dyz3zZlEjhkL7tIxTrA7zjcCj8FHat4s8yQpLq6wldCNmN7s8pQpXU-wlkc7tqV8AzQwv--fT5lSF82L"))
+                        .content(url))
                 .andExpect(status().isOk());
 
         // Get
@@ -49,21 +59,22 @@ public class ImageCoreServiceIntegrationTests {
         mockMvc.perform(
                 delete("/api/images/a"))
                 .andExpect(status().isOk());
+
+        Mockito.verify( imageService ).uploadToAWS("a", url);
+        Mockito.verify( imageService ).getImage("a");
+        Mockito.verify( imageService ).deleteImage("a");
+        verifyNoMoreInteractions( imageService );
     }
 
     @Test
     public void getUserFail() throws Exception {
-        mockMvc.perform(
-                get("/api/images/dfetrygvngvfhtyupqaz"))
-                .andExpect(status().is4xxClientError())
-                .andReturn();
-    }
+        String wrongUser = "dfetrygvngvfhtyupqaz";
 
-    @Test
-    public void getImageFail() throws Exception {
+        doThrow(new IOException()).when(imageService).getImage(wrongUser);
+
         mockMvc.perform(
-                get("/api/images/Unknown"))
-                .andExpect(status().is4xxClientError())
+                get("/api/images/"+wrongUser))
+                .andExpect(status().is5xxServerError())
                 .andReturn();
     }
 
