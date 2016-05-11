@@ -1,6 +1,8 @@
 package be.ordina.ordineo;
 
 import be.ordina.ordineo.mock.ImageServiceBeanMockConfiguration;
+import be.ordina.ordineo.model.Image;
+import be.ordina.ordineo.repository.ImageRepository;
 import be.ordina.ordineo.service.ImageService;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +34,21 @@ public class ImageCoreServiceIntegrationTests {
     private WebApplicationContext wac;
 
     @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private ImageService imageService;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .build();
+        Image image = new Image();
+
+        image.setUsername("a");
+        image.setImage("https://www.google.be/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwipgJy6k9LMAhVLkiwKHU2tDK8QjRwIBw&url=http%3A%2F%2Fwww.bbc.com%2Fnews%2Ftechnology-34119243&psig=AFQjCNEPecvWNADYM-K0GjU_xqzh1DfDWQ&ust=1463060559396580");
+
+        imageRepository.save(image);
     }
 
     @Test
