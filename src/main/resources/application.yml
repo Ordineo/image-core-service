@@ -20,8 +20,8 @@ cloud:
     region:
       static: us-east-1
     credentials:
-      accessKey: 'AKIAI5ACRZELVE6JMROQ'
-      secretKey: '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'
+      accessKey: ${AWS_ACCESSKEY}
+            secretKey: ${AWS_SECRETKEY}
       instanceProfile: true
 ---
 eureka:
@@ -50,8 +50,8 @@ cloud:
       image:
         dbInstanceIdentifier: image
         databaseName: image
-        username: DieterHubau
-        password: image-admin
+        username: ${AWS_DB_USERNAME}
+        password: ${AWS_DB_PASSWORD}
 ---
 spring:
   profiles: cloud
