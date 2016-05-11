@@ -51,7 +51,7 @@ cloud:
         dbInstanceIdentifier: image
         databaseName: image
         username: DieterHubau
-        password: jworks360tool
+        password: image-admin
 ---
 spring:
   profiles: cloud
