@@ -20,8 +20,8 @@ cloud:
     region:
       static: us-east-1
     credentials:
-      accessKey: 'AKIAIQYXG7RGROCRCKGQ'
-      secretKey: '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'
+      accessKey: 'AKIAI5ACRZELVE6JMROQ'
+      secretKey: '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'
       instanceProfile: true
 ---
 eureka:
@@ -50,8 +50,8 @@ cloud:
       image:
         dbInstanceIdentifier: image
         databaseName: image
-        username: admin
-        password: image-admin
+        username: DieterHubau
+        password: jworks360tool
 ---
 spring:
   profiles: cloud
